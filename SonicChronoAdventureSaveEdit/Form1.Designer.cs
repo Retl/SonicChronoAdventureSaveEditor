@@ -33,10 +33,11 @@
             this.opnSaveFile = new System.Windows.Forms.OpenFileDialog();
             this.saveSaveFile = new System.Windows.Forms.SaveFileDialog();
             this.grdSaveData = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.colIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lblStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdSaveData)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -70,6 +71,7 @@
             // saveSaveFile
             // 
             this.saveSaveFile.FileName = "BTSAsave.bin";
+            this.saveSaveFile.FileOk += new System.ComponentModel.CancelEventHandler(this.saveSaveFile_FileOk);
             // 
             // grdSaveData
             // 
@@ -86,8 +88,20 @@
             this.colValue});
             this.grdSaveData.Location = new System.Drawing.Point(3, 3);
             this.grdSaveData.Name = "grdSaveData";
-            this.grdSaveData.Size = new System.Drawing.Size(243, 467);
+            this.grdSaveData.Size = new System.Drawing.Size(243, 454);
             this.grdSaveData.TabIndex = 2;
+            // 
+            // colIndex
+            // 
+            this.colIndex.HeaderText = "Index";
+            this.colIndex.Name = "colIndex";
+            this.colIndex.Width = 58;
+            // 
+            // colValue
+            // 
+            this.colValue.HeaderText = "Value";
+            this.colValue.Name = "colValue";
+            this.colValue.Width = 59;
             // 
             // panel1
             // 
@@ -104,22 +118,19 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.grdSaveData);
-            this.panel2.Location = new System.Drawing.Point(12, 44);
+            this.panel2.Location = new System.Drawing.Point(12, 57);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(249, 470);
+            this.panel2.Size = new System.Drawing.Size(249, 457);
             this.panel2.TabIndex = 5;
             // 
-            // colIndex
+            // lblStatus
             // 
-            this.colIndex.HeaderText = "Index";
-            this.colIndex.Name = "colIndex";
-            this.colIndex.Width = 58;
-            // 
-            // colValue
-            // 
-            this.colValue.HeaderText = "Value";
-            this.colValue.Name = "colValue";
-            this.colValue.Width = 59;
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(15, 41);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(129, 13);
+            this.lblStatus.TabIndex = 6;
+            this.lblStatus.Text = "Status messages go here.";
             // 
             // frmSCASaveEdit
             // 
@@ -127,6 +138,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(273, 526);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "frmSCASaveEdit";
@@ -136,6 +148,7 @@
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -150,6 +163,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridViewTextBoxColumn colIndex;
         private System.Windows.Forms.DataGridViewTextBoxColumn colValue;
+        private System.Windows.Forms.Label lblStatus;
     }
 }
 

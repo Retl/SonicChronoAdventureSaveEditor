@@ -87,6 +87,18 @@ namespace SonicChronoAdventureSaveEdit
                     case 83:
                         rowName = "BurnEXP";
                         break;
+                    case 90:
+                        rowName = "SwoULCK";
+                        break;
+                    case 91:
+                        rowName = "JetULCK";
+                        break;
+                    case 92:
+                        rowName = "ModULCK";
+                        break;
+                    case 93:
+                        rowName = "BurnULCK";
+                        break;
                     case 94:
                         rowName = "Emeralds";
                         break;
@@ -137,6 +149,7 @@ namespace SonicChronoAdventureSaveEdit
 
                     if (r.BaseStream.Length > 3000) {
                         Console.WriteLine("File seems way too large.");
+                        lblStatus.Text = "File seems way too large. Aborting. (" + filePath + ")";
                         arrData.Clear();
                         arrData.Add(-9999);
                         MapDataToDataGrid(arrData, grdSaveData);
@@ -170,12 +183,15 @@ namespace SonicChronoAdventureSaveEdit
                         catch (System.ArgumentException)
                         {
                             Console.WriteLine("Just as a heads up, you had that ARgument Exception error again.");
+                            lblStatus.Text = "Just as a heads up, you had that ARgument Exception error again.";
                         }
                         catch (System.IO.EndOfStreamException)
                         {
                             Console.WriteLine("Just as a heads up, you had that End of Steam Exception this time...");
+                            lblStatus.Text = "Just as a heads up, you had that End of Steam Exception this time...";
                         }
                     }
+                    lblStatus.Text = "Loaded. (Length: " + r.BaseStream.Length + ")";
                     MapDataToDataGrid(arrData, grdSaveData);
                 }
             }
@@ -215,6 +231,51 @@ namespace SonicChronoAdventureSaveEdit
                 return BitConverter.ToUInt32(data, 0);
             }
 
+        }
+
+        private void saveSaveFile_FileOk(object sender, CancelEventArgs e)
+        {
+            using (Stream fileStream = new FileStream(saveSaveFile.FileName, FileMode.Create, FileAccess.Write))
+            {
+                /*using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    String fileContent = reader.ReadToEnd();
+                    Console.WriteLine(fileContent);
+                }*/
+
+                using (BinaryWriter w = new BinaryWriter(fileStream))
+                {
+                    foreach (int i32 in arrDataHeader)
+                    {
+                        byte[] intBytes = BitConverter.GetBytes(i32);
+                        Array.Reverse(intBytes);
+                        int reversed = BitConverter.ToInt32(intBytes, 0);
+                        w.Write(reversed);
+                    }
+
+                    foreach (DataGridViewRow sRow in grdSaveData.Rows)
+                    {
+                        String sVal = sRow.Cells[1].Value.ToString();
+                        int iVal = -1;
+                        if (!Int32.TryParse(sVal, out iVal))
+                        {
+                            lblStatus.Text = "Save file corrupted: An invalid value was entered in the data grid at (" + sRow.Cells[0].Value.ToString() + "). Please fix and re-save.";
+                            return;
+                        }
+                        byte[] intBytes = BitConverter.GetBytes(iVal);
+                        Array.Reverse(intBytes);
+                        int reversed = BitConverter.ToInt32(intBytes, 0);
+                        w.Write(reversed);
+                    }
+
+                    foreach (byte b in arrDataFooter)
+                    {
+                        w.Write(b);
+                    }
+
+                    lblStatus.Text = "Saved. (Length: " + w.BaseStream.Length + ")";
+                }
+            }
         }
     }
 }
